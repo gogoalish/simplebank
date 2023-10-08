@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	mockdb "github.com/gogoalish/simplebank/db/mock"
 	db "github.com/gogoalish/simplebank/db/sqlc"
@@ -129,11 +128,10 @@ func TestCreateAccountAPI(t *testing.T) {
 	}
 
 	account := db.Account{
-		ID:        1,
-		Owner:     arg.Owner,
-		Balance:   0,
-		Currency:  arg.Currency,
-		CreatedAt: time.Now(),
+		ID:       1,
+		Owner:    arg.Owner,
+		Balance:  0,
+		Currency: arg.Currency,
 	}
 	testCases := []struct {
 		name          string
@@ -152,6 +150,7 @@ func TestCreateAccountAPI(t *testing.T) {
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusOK, recorder.Code)
+				requireBodyMatchAccount(t, recorder.Body, account)
 			},
 		},
 		{
@@ -201,6 +200,44 @@ func TestCreateAccountAPI(t *testing.T) {
 	}
 }
 
-func TestDeleteAccountApi(t *testing.T) {
+// func TestDeleteAccountApi(t *testing.T) {
+// 	account := randomAccount()
+// 	testCases := []struct {
+// 		name          string
+// 		accountID     int64
+// 		buildStubs    func(*mockdb.MockStore)
+// 		checkResponse func(*testing.T, *httptest.ResponseRecorder)
+// 	}{
+// 		{
+// 			name:      "OK",
+// 			accountID: account.ID,
+// 			buildStubs: func(store *mockdb.MockStore) {
+// 				store.EXPECT().
+// 					DeleteAccount(gomock.Any(), account.ID).
+// 					Times(1).
+// 					Return(nil)
+// 			},
+// 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+// 				require.Equal(t, http.StatusOK, recorder.Code)
+// 			},
+// 		},
+// 	}
+// 	for _, tc := range testCases {
+// 		t.Run(tc.name, func(t *testing.T) {
+// 			ctrl := gomock.NewController(t)
+// 			defer ctrl.Finish()
+// 			store := mockdb.NewMockStore(ctrl)
+// 			tc.buildStubs(store)
+// 			server := NewServer(store)
+// 			recorder := httptest.NewRecorder()
+// 			jsonId, err := json.Marshal(tc.accountID)
+// 			require.NoError(t, err)
 
-}
+// 			request, err := http.NewRequest(http.MethodDelete, "/delete", bytes.NewBuffer(jsonId))
+// 			require.NoError(t, err)
+
+// 			server.router.ServeHTTP(recorder, request)
+// 			tc.checkResponse(t, recorder)
+// 		})
+// 	}
+// }

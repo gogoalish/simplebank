@@ -13,7 +13,6 @@ func CreateRandomTransfer(account1, account2 Account, t *testing.T) Transfer {
 	transfer, err := testQueries.CreateTransfer(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, transfer)
-
 	require.Equal(t, transfer.Amount, arg.Amount)
 	require.Equal(t, transfer.FromAccountID, arg.FromAccountID)
 	require.Equal(t, transfer.ToAccountID, arg.ToAccountID)
