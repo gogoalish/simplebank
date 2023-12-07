@@ -1,13 +1,13 @@
 package util
 
-var currencies = []string{
+var Currencies = []string{
 	"USD",
 	"EUR",
 	"CAD",
 }
 
 func IsSupportedCurrency(currency string) bool {
-	for _, x := range currencies {
+	for _, x := range Currencies {
 		if x == currency {
 			return true
 		}

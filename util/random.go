@@ -36,8 +36,8 @@ func RandomMoney() int64 {
 }
 
 func RandomCurrency() string {
-	n := len(currencies)
-	return currencies[rand.Intn(n)]
+	n := len(Currencies)
+	return Currencies[rand.Intn(n)]
 }
 
 func RandomEntry(balance int64) int64 {
