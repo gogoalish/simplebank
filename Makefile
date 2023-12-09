@@ -40,4 +40,7 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/gogoalish/simplebank/db/sqlc Store
 
+pull:
+	docker pull postgres:15-alpine
+
 .PHONY: postgres createdb dropdb migrateup migratedown sqlc test server mock migratedown1 migrateup1
