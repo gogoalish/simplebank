@@ -19,17 +19,29 @@ createdb:
 dropdb:
 	docker exec -it postgres15 dropdb simple_bank
 
-migrateup:
+migrateup-local:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up
 
-migrateup1:
+migrateup1-local:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up 1
 
-migratedown:
+migratedown-local:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down
 
-migratedown1:
+migratedown1-local:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 1
+
+migrateup:
+	migrate -path db/migration -database "postgresql://root:DCMthnuXMKbQfRVT9Vdx@simple-bank.c9geokuemnpt.eu-north-1.rds.amazonaws.com:5432/simple_bank" -verbose up
+
+migrateup1:
+	migrate -path db/migration -database "postgresql://root:DCMthnuXMKbQfRVT9Vdx@simple-bank.c9geokuemnpt.eu-north-1.rds.amazonaws.com:5432/simple_bank" -verbose up 1
+
+migratedown:
+	migrate -path db/migration -database "postgresql://root:DCMthnuXMKbQfRVT9Vdx@simple-bank.c9geokuemnpt.eu-north-1.rds.amazonaws.com:5432/simple_bank" -verbose down
+
+migratedown1:
+	migrate -path db/migration -database "postgresql://root:DCMthnuXMKbQfRVT9Vdx@simple-bank.c9geokuemnpt.eu-north-1.rds.amazonaws.com:5432/simple_bank" -verbose down 1
 
 sqlc:
 	sqlc generate
