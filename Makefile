@@ -1,3 +1,8 @@
+LINTVER=v1.49.0
+LINTBIN=${BINDIR}/lint_${GOVER}_${LINTVER}
+BINDIR=${CURDIR}/bin
+REMOTEPSQL=postgres://root:AIUC8OKmiP4k2RGNgshL9pVtmF2zym7T@dpg-cp331d8l5elc73ag1m8g-a.oregon-postgres.render.com/simple_bank_fhar
+
 network:
 	docker network create bank-network
 
@@ -32,16 +37,16 @@ migratedown1-local:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 1
 
 migrateup:
-	migrate -path db/migration -database "postgresql://root:DCMthnuXMKbQfRVT9Vdx@simple-bank.c9geokuemnpt.eu-north-1.rds.amazonaws.com:5432/simple_bank" -verbose up
+	migrate -path db/migration -database "${REMOTEPSQL}" -verbose up
 
 migrateup1:
-	migrate -path db/migration -database "postgresql://root:DCMthnuXMKbQfRVT9Vdx@simple-bank.c9geokuemnpt.eu-north-1.rds.amazonaws.com:5432/simple_bank" -verbose up 1
+	migrate -path db/migration -database "${REMOTEPSQL}" -verbose up 1
 
 migratedown:
-	migrate -path db/migration -database "postgresql://root:DCMthnuXMKbQfRVT9Vdx@simple-bank.c9geokuemnpt.eu-north-1.rds.amazonaws.com:5432/simple_bank" -verbose down
+	migrate -path db/migration -database "${REMOTEPSQL}" -verbose down
 
 migratedown1:
-	migrate -path db/migration -database "postgresql://root:DCMthnuXMKbQfRVT9Vdx@simple-bank.c9geokuemnpt.eu-north-1.rds.amazonaws.com:5432/simple_bank" -verbose down 1
+	migrate -path db/migration -database "${REMOTEPSQL}" -verbose down 1
 
 sqlc:
 	sqlc generate
@@ -57,5 +62,7 @@ mock:
 
 pull:
 	docker pull postgres:15-alpine
+
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest 
 
 .PHONY: postgres createdb dropdb migrateup migratedown sqlc test server mock migratedown1 migrateup1
